@@ -33,28 +33,25 @@ namespace LinuxTShockServerStop
         }
 
         private void OnConsoleCancel(object? sender, ConsoleCancelEventArgs e)
-        {           
+        {
             StopServer(true, "");
         }
-        public void Stop(CommandArgs e)
+        private static void Stop(CommandArgs e)
         {
-            if (Main.ServerSideCharacter)
-                foreach (var player in TShock.Players.Where(p => p != null && p.IsLoggedIn && !p.IsDisabledPendingTrashRemoval))
-                    player.SaveServerCharacter();
             StopServer(true, e.Parameters.Count == 0 ? "Server shutting down!" : "Server shutting down: " + string.Join(" ", e.Parameters));
         }
-        public void StopNoSave(CommandArgs e)
+        private static void StopNoSave(CommandArgs e)
         {
             StopServer(false, e.Parameters.Count == 0 ? "Server shutting down!" : "Server shutting down: " + string.Join(" ", e.Parameters));
         }
-        public void StopServer(bool saveWorld = true, string reason = "Server shutting down!")
+        private static void StopServer(bool saveWorld = true, string reason = "Server shutting down!")
         {
             TShock.ShuttingDown = true;
             if (saveWorld)
                 TShock.Utils.SaveWorld();
             foreach (var player in TShock.Players.Where(p => p != null))
             {
-                if (player.IsLoggedIn)
+                if (Main.ServerSideCharacter && player.IsLoggedIn)
                     player.SaveServerCharacter();
                 player.Disconnect(reason);
             }
