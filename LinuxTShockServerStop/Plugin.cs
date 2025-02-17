@@ -56,6 +56,7 @@ namespace LinuxTShockServerStop
                 player.Disconnect(reason);
             }
             TShock.Utils.Broadcast(reason, 255, 0, 0);
+            Netplay.Disconnect = true;
             Environment.Exit(0);
         }
     }
