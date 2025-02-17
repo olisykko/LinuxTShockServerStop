@@ -16,7 +16,6 @@ namespace LinuxTShockServerStop
         {
             ServerApi.Hooks.GamePostInitialize.Register(this, OnPostInitialize);
         }
-
         private void OnPostInitialize(EventArgs args)
         {
             if (OperatingSystem.IsLinux())
@@ -56,8 +55,7 @@ namespace LinuxTShockServerStop
                 player.Disconnect(reason);
             }
             TShock.Utils.Broadcast(reason, 255, 0, 0);
-            Netplay.Disconnect = true;
-            Environment.Exit(0);
+            Environment.Exit(-1); // Fuck Linux
         }
     }
 }
